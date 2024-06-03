@@ -1,4 +1,4 @@
-use std::{ffi::CStr, path::Path};
+use std::{ffi::CStr, path::{Path, PathBuf}};
 
 use widestring::{Utf16Str, Utf16String};
 use windows::{
@@ -26,6 +26,16 @@ pub fn get_proc_address(hmodule: HMODULE, name: &CStr) -> usize {
     else {
         0
     }
+}
+
+pub fn get_game_dir() -> Option<PathBuf> {
+    let mut slice = [0u16; MAX_PATH as usize];
+    let length = unsafe { GetModuleFileNameW(HMODULE::default(), &mut slice) } as usize;
+    let exec_path_str = unsafe { Utf16Str::from_slice_unchecked(&slice[..length]) }.to_string();
+    let exec_path = Path::new(&exec_path_str);
+    let parent = exec_path.parent()?;
+
+    Some(parent.to_owned())
 }
 
 pub fn get_game_dir_str() -> Option<String> {

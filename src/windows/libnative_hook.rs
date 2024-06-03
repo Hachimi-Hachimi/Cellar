@@ -1,10 +1,12 @@
 #![allow(non_snake_case, non_upper_case_globals)]
 
+use std::os::raw::c_void;
+
 use windows::Win32::Foundation::HMODULE;
 
 use crate::{core::Error, windows::{interceptor, utils}};
 
-fn InitParameters() -> i64 { 1 }
+extern "C" fn InitParameters(_param_1: i32, _param_2: *mut c_void) {}
 
 fn init_internal(handle: HMODULE) -> Result<(), Error> {
     let InitParameters_addr = utils::get_proc_address(handle, cstr!("InitParameters"));
