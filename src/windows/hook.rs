@@ -28,7 +28,6 @@ extern "C" fn LoadLibraryW(filename: PCWSTR) -> HMODULE {
     if filename_str.ends_with("libnative.dll") {
         info!("Got libnative.dll");
         libnative_hook::init(handle);
-        unsafe { interceptor::unhook(ffi::LoadLibraryW as usize).ok(); }
     }
     handle
 }
