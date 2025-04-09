@@ -16,7 +16,7 @@ impl From<minhook::MH_STATUS> for Error {
     }
 }
 
-pub unsafe fn _unhook(orig_addr: usize) -> Result<(), Error> {
+pub unsafe fn unhook(orig_addr: usize) -> Result<(), Error> {
     MinHook::disable_hook(orig_addr as *mut c_void)?;
     MinHook::remove_hook(orig_addr as *mut c_void)?;
     Ok(())
